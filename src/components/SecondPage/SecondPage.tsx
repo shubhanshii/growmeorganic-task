@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { Alert, AlertTitle, Box, TextField, InputAdornment, IconButton, Snackbar } from '@mui/material';
+import { Alert, Box, TextField, InputAdornment, IconButton, Snackbar } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
-import { DataGrid, GridToolbarContainer, GridToolbarFilterButton, GridToolbarExport } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer, GridToolbarFilterButton} from '@mui/x-data-grid';
 import DepartmentList from '../DepartmentList/DepartmentList';
 
-// Define the Post interface for API response
+
 interface Post {
   userId: number;
   id: number;
@@ -14,7 +14,7 @@ interface Post {
   body: string;
 }
 
-// Define columns for the DataGrid
+
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
   {
@@ -35,13 +35,13 @@ const SecondPage: React.FC = () => {
   const location = useLocation();
   const userDetails = localStorage.getItem('userDetails');
 
-  // State for storing posts, success message, search text, and URL param
+ 
   const [posts, setPosts] = useState<Post[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [searchText, setSearchText] = useState('');
   const successParam = new URLSearchParams(location.search).get('success');
 
-  // Fetch posts from API and handle success message
+ 
   useEffect(() => {
     if (!userDetails) {
       alert('Please provide your details before accessing this page');
@@ -70,19 +70,18 @@ const SecondPage: React.FC = () => {
     }
   }, [navigate, userDetails, successParam]);
 
-  // Handle search text change
   const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   };
 
-  // Filter posts based on search text
+  
   const filteredPosts = searchText
     ? posts.filter((post) =>
       post.title.toLowerCase().includes(searchText.toLowerCase())
     )
     : posts;
 
-  // Define departments and sub-departments
+  
   const departments = [
     {
       department: 'customer_service',
@@ -97,7 +96,7 @@ const SecondPage: React.FC = () => {
 
   return (
     <Box>
-      {/* Display success message */}
+      
       <Snackbar
         open={showSuccess}
         autoHideDuration={3000}
@@ -108,17 +107,15 @@ const SecondPage: React.FC = () => {
         }}
       >
         <Alert severity="success">
-          <AlertTitle>Congratulations</AlertTitle>
           Form submitted successfully!
         </Alert>
       </Snackbar>
 
-      {/* Heading and search input */}
+      
       <h2>Welcome!</h2>
-      <Box mb={2} display="flex" alignItems="center" sx={{ bgcolor: 'text.disabled'}}>
+      <Box mb={2} display="flex" alignItems="center" sx={{ bgcolor: '#e9ecee'}}>
         <TextField
-          placeholder="Search by Title"
-          // variant="outlined"
+          placeholder="Search"
           value={searchText}
           onChange={handleSearchTextChange}
           fullWidth
@@ -134,7 +131,7 @@ const SecondPage: React.FC = () => {
         />
       </Box>
 
-      {/* Render the DepartmentList */}
+     
       <DepartmentList departments={departments} />
 
       <Box height={400} width="100%" minHeight="100%">
@@ -158,12 +155,11 @@ const SecondPage: React.FC = () => {
   );
 };
 
-// Custom toolbar for the DataGrid
+
 const CustomToolbar = () => {
   return (
     <GridToolbarContainer>
       <GridToolbarFilterButton />
-      <GridToolbarExport />
     </GridToolbarContainer>
   );
 };
